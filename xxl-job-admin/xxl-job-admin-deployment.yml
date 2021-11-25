@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xxl-job-admin-deployment
+  labels:
+    app: xxl-job-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xxl-job-admin
+  template:
+    metadata:
+      labels:
+        app: xxl-job-admin
+    spec:
+      containers:
+      - name: xxl-job-admin
+        image: registry.cn-hangzhou.aliyuncs.com/modds/xxl-job-admin:dev
+        ports:
+        - containerPort: 39000
+        imagePullPolicy: Never
+      imagePullSecrets:
+      - name: aliyun
+
