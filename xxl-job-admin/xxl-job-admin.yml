@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: xxl-job-admin-deployment
+  name: xxl-job-admin
   labels:
     app: xxl-job-admin
 spec:
