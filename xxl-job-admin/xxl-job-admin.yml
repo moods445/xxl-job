@@ -18,8 +18,10 @@ spec:
       - name: xxl-job-admin
         image: registry.cn-hangzhou.aliyuncs.com/modds/xxl-job-admin:dev
         ports:
-        - containerPort: 39000
+        - name: http
+          containerPort: 39000
         imagePullPolicy: Never
       imagePullSecrets:
       - name: aliyun
+      
 
