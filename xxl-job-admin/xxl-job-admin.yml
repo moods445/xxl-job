@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: xxl-job-admin
-        image: registry.cn-hangzhou.aliyuncs.com/modds/xxl-job-admin:dev
+        image: modds/xxl-job-admin:2.3.1-SNAPSHOT
         ports:
         - name: http
           containerPort: 39000
