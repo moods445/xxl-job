@@ -21,14 +21,14 @@ spec:
         - name: http
           containerPort: 39000
         imagePullPolicy: Never
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: http
+            scheme: HTTP
+          timeoutSeconds: 1
+          periodSeconds: 30
+          successThreshold: 1
+          failureThreshold: 10
       imagePullSecrets:
       - name: aliyun
-      livenessProbe:
-        httpGet:
-          path: /actuator/health
-          port: http
-          scheme: HTTP
-        timeoutSeconds: 1
-        periodSeconds: 30
-        successThreshold: 1
-        failureThreshold: 10
