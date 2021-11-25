@@ -23,5 +23,12 @@ spec:
         imagePullPolicy: Never
       imagePullSecrets:
       - name: aliyun
-      
-
+      livenessProbe:
+        httpGet:
+          path: /actuator/health
+          port: http
+          scheme: HTTP
+        timeoutSeconds: 1
+        periodSeconds: 30
+        successThreshold: 1
+        failureThreshold: 10
