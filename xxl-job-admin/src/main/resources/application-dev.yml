@@ -1,0 +1,4 @@
+spring.datasource:
+  url: jdbc:mysql://unraid.rn.modds.top:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+  username: root
+  password: root
