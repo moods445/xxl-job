@@ -20,6 +20,7 @@ spec:
         ports:
         - name: http
           containerPort: 39000
+          hostPort: 39000
         imagePullPolicy: Never
         livenessProbe:
           httpGet:
