@@ -1,11 +1,18 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: xxl-job
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: xxl-job-admin
+  namespace: xxl-job
   labels:
     app: xxl-job-admin
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: xxl-job-admin
@@ -15,21 +22,48 @@ spec:
         app: xxl-job-admin
     spec:
       containers:
-      - name: xxl-job-admin
-        image: modds/xxl-job-admin:2.3.1-SNAPSHOT
-        ports:
-        - name: http
-          containerPort: 39000
-          hostPort: 39000
-        imagePullPolicy: Never
-        livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: http
-            scheme: HTTP
-          timeoutSeconds: 1
-          periodSeconds: 30
-          successThreshold: 1
-          failureThreshold: 10
+        - name: xxl-job-admin
+          image: registry.cn-hangzhou.aliyuncs.com/modds/xxl-job-admin:2.3.1-SNAPSHOT
+          ports:
+            - name: port
+              containerPort: 39000
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: port
+              scheme: HTTP
+            periodSeconds: 5
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: port
+              scheme: HTTP
+            periodSeconds: 5
+            failureThreshold: 10
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: port
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            failureThreshold: 10
       imagePullSecrets:
-      - name: aliyun
+        - name: aliyun
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xxl-job-admin
+  namespace: xxl-job
+  labels:
+    app: xxl-job-admin
+spec:
+  type: NodePort
+  ports:
+   - port: 39000
+     protocol: TCP
+     targetPort: 39000
+  selector:
+    app: xxl-job-admin
