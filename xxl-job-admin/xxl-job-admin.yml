@@ -24,6 +24,8 @@ spec:
       containers:
         - name: xxl-job-admin
           image: registry.cn-hangzhou.aliyuncs.com/modds/xxl-job-admin:2.3.1-SNAPSHOT
+          imagePullPolicy:
+            Always
           ports:
             - name: port
               containerPort: 39000
