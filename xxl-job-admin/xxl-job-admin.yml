@@ -60,10 +60,61 @@ metadata:
   labels:
     app: xxl-job-admin
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
    - port: 39000
      protocol: TCP
      targetPort: 39000
   selector:
     app: xxl-job-admin
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xxl-job-executor-common
+  namespace: xxl-job
+  labels:
+    app: xxl-job-executor-common
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: xxl-job-executor-common
+  template:
+    metadata:
+      labels:
+        app: xxl-job-executor-common
+    spec:
+      containers:
+        - name: xxl-job-executor-common
+          image: registry.cn-hangzhou.aliyuncs.com/modds/xxl-job-executor-common:latest
+          imagePullPolicy:
+            Always
+          ports:
+            - name: port
+              containerPort: 38001
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: port
+              scheme: HTTP
+            periodSeconds: 5
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: port
+              scheme: HTTP
+            periodSeconds: 5
+            failureThreshold: 10
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: port
+              scheme: HTTP
+            initialDelaySeconds: 8
+            periodSeconds: 5
+            failureThreshold: 10
+      imagePullSecrets:
+        - name: aliyun
